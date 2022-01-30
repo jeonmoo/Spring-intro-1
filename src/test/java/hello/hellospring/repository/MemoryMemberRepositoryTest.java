@@ -2,6 +2,7 @@ package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,7 +12,12 @@ import static org.assertj.core.api.Assertions.*;
 
 class MemoryMemberRepositoryTest {
 
-    MemberRepository repository = new MemoryMemberRepository();
+    MemoryMemberRepository repository = new MemoryMemberRepository();
+
+    @AfterEach
+    public void afterEach() {
+        repository.clearStore();
+    }
 
     @Test
     public void save(){
@@ -35,11 +41,6 @@ class MemoryMemberRepositoryTest {
         repository.save(member2);
 
         Member result = repository.findByName("spring1").get();
-        Member result1 = member1;
-
-        System.out.println("member1 : " + member1.getName() +", "+ member1.getId());
-        System.out.println("result1 : " + result1.getName() +", "+ result1.getId());
-        System.out.println("result : " + result.getName() +", "+ result.getId());
 
         Assertions.assertThat(result).isEqualTo(member1);
         Assertions.assertThat(result).isNotEqualTo(member2);
